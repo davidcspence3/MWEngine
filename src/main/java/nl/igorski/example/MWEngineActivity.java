@@ -21,6 +21,10 @@ import nl.igorski.mwengine.core.*;
 
 import java.util.Vector;
 
+import static nl.igorski.mwengine.core.SampleManager.getSample;
+import static nl.igorski.mwengine.core.SampleManager.getSampleRateForSample;
+import static nl.igorski.mwengine.core.SampleManager.setSample;
+
 public final class MWEngineActivity extends Activity {
     /**
      * IMPORTANT : when creating native layer objects through JNI it
@@ -42,7 +46,8 @@ public final class MWEngineActivity extends Activity {
     private Vector<SynthEvent>  _synth1Events;
     private Vector<SynthEvent>  _synth2Events;
     private Vector<SampleEvent> _drumEvents;
-    private SynthEvent          _liveEvent;
+    //private SynthEvent          _liveEvent;
+    private SampleEvent          _liveEvent;
 
     private boolean _sequencerPlaying = false;
     private boolean _isRecording      = false;
@@ -253,7 +258,7 @@ public final class MWEngineActivity extends Activity {
 
         // Off-beat minor seventh chord stabs for synth 2
 
-        createSynthEvent( _synth2, Pitch.note( "C", 3 ),  4 );
+        /*createSynthEvent( _synth2, Pitch.note( "C", 3 ),  4 );
         createSynthEvent( _synth2, Pitch.note( "G", 3 ),  4 );
         createSynthEvent( _synth2, Pitch.note( "A#", 3 ), 4 );
         createSynthEvent( _synth2, Pitch.note( "D#", 3 ), 4 );
@@ -262,10 +267,21 @@ public final class MWEngineActivity extends Activity {
         createSynthEvent( _synth2, Pitch.note( "A", 3 ), 8 );
         createSynthEvent( _synth2, Pitch.note( "C", 3 ), 8 );
         createSynthEvent( _synth2, Pitch.note( "F", 3 ), 8 );
+        */
 
+
+        loadWAVAsset("snare","snare.wav");
+
+        SampleEvent snareEvent = new SampleEvent(_sampler);
+        snareEvent.setSample(SampleManager.getSample("clap"), SAMPLE_RATE);
+        _liveEvent = snareEvent;
+        _sampler.getAudioChannel().getProcessingChain().addProcessor( _filter );
+
+
+        //_sampler.addEvent(snareEvent, true);
+        //_liveEvent = snareEvent;
         // a C note to be synthesized live when holding down the corresponding button
-
-        _liveEvent = new SynthEvent(( float ) Pitch.note( "C", 3 ), _synth2 );
+        //_liveEvent = new SynthEvent(( float ) Pitch.note( "C", 3 ), _synth2 );
     }
 
     protected void flushSong() {
@@ -375,7 +391,7 @@ public final class MWEngineActivity extends Activity {
                     _liveEvent.play();
                     return true;
                 case MotionEvent.ACTION_UP:
-                    _liveEvent.stop();
+                    //_liveEvent.stop();
                     return true;
             }
             return false;
@@ -539,7 +555,7 @@ public final class MWEngineActivity extends Activity {
      */
     private void createDrumEvent( String sampleName, int position ) {
         final SampleEvent drumEvent = new SampleEvent( _sampler );
-        drumEvent.setSample( SampleManager.getSample( sampleName ));
+        drumEvent.setSample( getSample( sampleName ));
         drumEvent.positionEvent( 0, 16, position );
         drumEvent.addToSequencer(); // samples have to be explicitly added for playback
 
