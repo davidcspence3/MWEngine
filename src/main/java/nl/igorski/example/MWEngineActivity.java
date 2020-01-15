@@ -182,6 +182,7 @@ public final class MWEngineActivity extends Activity {
 
         loadWAVAsset( "hat.wav",  "hat" );
         loadWAVAsset( "clap.wav", "clap" );
+        loadWAVAsset("snare.wav","snare");
 
         // create a lowpass filter to catch all low rumbling and a limiter to prevent clipping of output :)
 
@@ -262,21 +263,12 @@ public final class MWEngineActivity extends Activity {
         createSynthEvent( _synth2, Pitch.note( "G", 3 ),  4 );
         createSynthEvent( _synth2, Pitch.note( "A#", 3 ), 4 );
         createSynthEvent( _synth2, Pitch.note( "D#", 3 ), 4 );
-
-        createSynthEvent( _synth2, Pitch.note( "D", 3 ), 8 );
-        createSynthEvent( _synth2, Pitch.note( "A", 3 ), 8 );
-        createSynthEvent( _synth2, Pitch.note( "C", 3 ), 8 );
-        createSynthEvent( _synth2, Pitch.note( "F", 3 ), 8 );
         */
 
-
-        loadWAVAsset("snare","snare.wav");
-
         SampleEvent snareEvent = new SampleEvent(_sampler);
-        snareEvent.setSample(SampleManager.getSample("clap"), SAMPLE_RATE);
+        snareEvent.setSample(SampleManager.getSample("snare"), SAMPLE_RATE);
         _liveEvent = snareEvent;
         _sampler.getAudioChannel().getProcessingChain().addProcessor( _filter );
-
 
         //_sampler.addEvent(snareEvent, true);
         //_liveEvent = snareEvent;

@@ -28,6 +28,8 @@ import android.os.Handler;
 import android.os.Process;
 import android.util.Log;
 import nl.igorski.mwengine.core.*;
+import nl.igorski.mwengine.core.ProcessingChain;
+import nl.igorski.mwengine.core.SequencerController;
 
 public final class MWEngine extends Thread
 {
